@@ -13,6 +13,10 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   minitest-reporters
+
+BUNDLED WITH
+   1.10.6

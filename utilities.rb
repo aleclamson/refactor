@@ -1,17 +1,7 @@
 module Utilities
 	
-	def evaluate(x)
-		if x % 100 == 0
-			if x % 400 == 0
-				true
-			else
-				false
-			end
-		elsif x % 4 == 0
-			true
-		else
-			false
-		end
+	def leap_year? year
+		div_by_400?(year) || !div_by_100?(year)	&& div_by_4?(year)
 	end
 
 	def amount(a)
@@ -51,6 +41,7 @@ module Utilities
 		end
 
 		return c
+
 	end
 
 	def okay(a, b)
@@ -76,5 +67,21 @@ module Utilities
 
 		return ('%.1f' % (amount(c)[0..-2].to_f - amount(d)[0..-2].to_f)).to_s + '%'
 	end
-
+	
+	private 
+		def div_by_100? year
+			year % 100 == 0
+		end
+		def div_by_400? year
+			year % 400 == 0
+		end
+		def div_by_4? year
+			year % 4 == 0 
+		end
+		
 end
+
+m = Class.new do
+     include Utilities
+   	end.new
+puts m.amount 1234556
