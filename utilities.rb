@@ -4,30 +4,24 @@ module Utilities
 		div_by_400?(year) || !div_by_100?(year)	&& div_by_4?(year)
 	end
 
-	def amount(a)
-		('%.1f' % ((a / 31536000.0) * 100)) + '%'
+	def seconds_in_year seconds
+		seconds_per_year = 365*24*60*60.0
+		'%.if' % percent(seconds, seconds_per_year) + %
 	end
 
-	def convert(x)
-		a, b = x.split(":")
-		c, d = b.split(" ")
-		e = ""
-
-		if d.downcase != 'am'
-			if a.to_i == 12
-				e = a + ":" + c
-			else
-				e = (a.to_i + 12).to_s + ":" + c
-			end
-		elsif d.downcase != 'pm'
-			if a.to_i == 12
-				e = (a.to_i - 12).to_s + ":" + c
-			else
-				e = a + ":" + c
-			end
+	def convert_to_military time
+		hours, not_hours = time.split(":")
+		minutes, am_or_pm = not_hours.split(" ")
+		military_time = ""
+	
+		if !am?(am_or_pm) && hours.to_i != 12
+				military_time = convert_time((hours.to_i + 12).to_s, minutes)
+		elsif am?(am_or_pm) && hours.to_i == 12 
+				military_time = convert_time((hours.to_i - 12).to_s, minutes)
+		else
+				military_time = convert_time(hours, minutes)
 		end
-
-		return e
+		end
 	end
 
 	def convert2(x)
@@ -78,10 +72,18 @@ module Utilities
 		def div_by_4? year
 			year % 4 == 0 
 		end
-		
+		def am? a
+			a.downcase == 'am'
+		end
+		def convert_time a, b
+			a + ":" + b
+		end
+		def percent a, b
+			a / b *100
+		end
 end
 
-m = Class.new do
-     include Utilities
-   	end.new
-puts m.amount 1234556
+#m = Class.new do
+ #    include Utilities
+  # 	end.new
+#puts m.amount 1234556
